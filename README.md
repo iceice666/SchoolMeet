@@ -1,6 +1,6 @@
 # SchoolMeet
 
-A small program to automatic login to Google Meet when Morning Eexercise.
+A small program to automaticlly login to Google Meet when Morning Eexercise.
 
 Default school has been set to "nkhhs"
 
