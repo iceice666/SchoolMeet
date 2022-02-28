@@ -1,5 +1,5 @@
 /.venv
 /build
-/chromedriver.exe
+/src/chromedriver.exe
 /dist
 /__pycache__
