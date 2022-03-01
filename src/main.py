@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -13,12 +14,29 @@ PASSWORD = "12345678"
 
 
 class MEET_driver():
-    MEET_States = "INIT"
+    class _Action():
+        '''
+            NOTICE:
+            U can write your code here to add some custom Actions/Functions.
+            "found_element" will express the element that Selenium returned via driver_wait()'s CSS selector.
+
+            **IMPORTANT!** You should always return a List type object.
+            => That makes the process can operate code multiple times, not just once.
+        '''
+
+        def CLICK(self): return ["found_element.click()"]
+
+        def INPUT(self,  text: str, speed: int = 30):
+            action_list = []
+            for i in list(text):
+                action_list.append(f"found_element.send_keys('{i}')")
+                action_list.append(f"sleep(randint(0, {speed})/100)")
+            return action_list
+
+    Action = _Action()
 
     WAITING_TIMEOUT = 120
     FIND_FREQUENCY = 1
-
-    CLICK = "found_element.click()"
 
     opt = webdriver.ChromeOptions()
     opt.add_experimental_option(
@@ -31,84 +49,81 @@ class MEET_driver():
     for i in opt_arg:
         opt.add_argument(i)
 
-    driver = webdriver.Chrome(service=Service("./chromedriver.exe"), options=opt)
+    if os.path.exists("src/chromedriver.exe"):
+        _service = Service("src/chromedriver.exe")
+    else:
+        _service = None
 
-    def driver_wait(self, driver, element, expression="None", waiting_timeout=WAITING_TIMEOUT, find_frequency=FIND_FREQUENCY):
+    def __init__(self) -> None:
+        self.driver = webdriver.Chrome(service=self._service, options=self.opt)
 
-        found_element = WebDriverWait(driver, waiting_timeout, find_frequency).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, element)))
-        eval(expression)
+    def driver_wait(self, CSS_selector: str, expression: list = ["None"], waiting_timeout: int = WAITING_TIMEOUT, find_frequency: int = FIND_FREQUENCY):
+
+        found_element = WebDriverWait(self.driver, waiting_timeout, find_frequency).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, CSS_selector)))
+        for i in expression:
+            eval(i)
 
         return found_element
 
-    def driver_input(self, element, text):
-        for i in list(text):
-            element.send_keys(i)
-            sleep(randint(0, 30)/100)
-
-    def get_into_meet(self, email=EMAIL, password=PASSWORD):
+    def get_into_meet(self, email: str = EMAIL, password: str = PASSWORD):
 
         # ^ MEET
         self.driver.get("https://meet.google.com/")
-        self.MEET_States = "ON WEBSITE"
 
         # ^ LOGIN
         self.driver_wait(
-            self.driver, "#drawer > div > div.glue-header__container.glue-header__container--cta > div.primary-meet-cta.tbd > div > span:nth-child(1)", self.CLICK)
+            "#drawer > div > div.glue-header__container.glue-header__container--cta > div.primary-meet-cta.tbd > div > span:nth-child(1)", self.Action.CLICK())
 
         # ^ EMAIL
-        _element = self.driver_wait(self.driver, "#identifierId")
-        self.driver_input(_element, email)
-        self.driver_wait(self.driver, "#identifierNext > div > button > span",
-                         self.CLICK)
+        self.driver_wait("#identifierId", self.Action.INPUT(email))
+        self.driver_wait("#identifierNext > div > button > span",
+                         self.Action.CLICK())
 
         # ^ PASSWORD
-        _element = self.driver_wait(
-            self.driver, "#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input")
-        self.driver_input(_element, password)
         self.driver_wait(
-            self.driver, "#passwordNext > div > button > span", self.CLICK)
+            "#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input", self.Action.INPUT(password))
+        self.driver_wait("#passwordNext > div > button > span",
+                         self.Action.CLICK())
 
         # ^ MEET CODE
-        _element = self.driver_wait(self.driver, "#i3")
-        self.driver_input(_element, "nkhhs")
-        self.driver_wait(self.driver, "#yDmH0d > c-wiz > div > div.S3RDod > div > div.Qcuypc > div.Ez8Iud > div > div.KOM0mb >    div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > button > span",
-                         self.CLICK)
+        self.driver_wait("#i3", self.Action.INPUT("nkhhs"))
+        self.driver_wait("#yDmH0d > c-wiz > div > div.S3RDod > div > div.Qcuypc > div.Ez8Iud > div > div.KOM0mb >    div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > button > span",
+                         self.Action.CLICK())
 
         # ^ ENTRY
-        self.driver_wait(self.driver, "#yDmH0d > c-wiz > div > div > div:nth-child(9) > div.crqnQb > div > div > div.vgJExf > div > div > div.d7iDfe.NONs6c > div > div.Sla0Yd > div > div.XCoPyb > div.uArJ5e.UQuaGc.Y5sE8d.uyXBBb.xKiqt.M9Bg4d > span", self.CLICK)
+        self.driver_wait("#yDmH0d > c-wiz > div > div > div:nth-child(9) > div.crqnQb > div > div > div.vgJExf > div > div > div.d7iDfe.NONs6c > div > div.Sla0Yd > div > div.XCoPyb > div.uArJ5e.UQuaGc.Y5sE8d.uyXBBb.xKiqt.M9Bg4d > span", self.Action.CLICK())
 
         print("\nDONE")
-        self.MEET_States = f"Logged as {email} "
+
+    #! It might doesn't work. SAD
 
     def meet_setting_optimize(self):
         """
         #^ CLOSE DIALOG BOX
 
-        self.driver_wait(self.driver,"#yDmH0d > div.llhEMd.iWO5td > div > div.g3VIld.vdySc.pMgRYb.Up8vH.J9Nfi.iWO5td > div.XfpsVe.J9fJmf > div > span", self.CLICK)
+        self.driver_wait("#yDmH0d > div.llhEMd.iWO5td > div > div.g3VIld.vdySc.pMgRYb.Up8vH.J9Nfi.iWO5td > div.XfpsVe.J9fJmf > div > span", self.Action.CLICK())
 
 
 
         #^ SETTINGS
-        self.driver_wait(self.driver,"#ow3 > div.T4LgNb > div > div:nth-child(9) > div.crqnQb > div.DAQYgc.xPh1xb.P9KVBf > div.rceXCe > div > div.Nsfdxf > div > div.VfPpkd-xl07Ob-XxIAqe-OWXEXe-oYxtQd > div:nth-child(1) > span > button > div.VfPpkd-Bz112c-Jh9lGc", self.CLICK)
+        self.driver_wait("#ow3 > div.T4LgNb > div > div:nth-child(9) > div.crqnQb > div.DAQYgc.xPh1xb.P9KVBf > div.rceXCe > div > div.Nsfdxf > div > div.VfPpkd-xl07Ob-XxIAqe-OWXEXe-oYxtQd > div:nth-child(1) > span > button > div.VfPpkd-Bz112c-Jh9lGc", self.Action.CLICK())
 
         #^ LAYOUT
-        self.driver_wait(self.driver,"body > div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.txTes.OcVpRe.CIYi0d.jvUMfb.yOCuXd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c > ul > li:nth-child(3) > span.VfPpkd-StrnGf-rymPhb-b9t22c.O6qLGb", self.CLICK)
-        self.driver_wait(self.driver,"#c33", self.CLICK)
+        self.driver_wait("body > div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.txTes.OcVpRe.CIYi0d.jvUMfb.yOCuXd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c > ul > li:nth-child(3) > span.VfPpkd-StrnGf-rymPhb-b9t22c.O6qLGb", self.Action.CLICK())
+        self.driver_wait("#c33", self.Action.CLICK())
 
         """
         pass
 
     def quit_meet(self):
-        self.MEET_States = "QUITTING"
         self.driver_wait(
-            self.driver, "#ow3 > div.T4LgNb > div > div:nth-child(9) > div.crqnQb > div.DAQYgc.xPh1xb.P9KVBf > div.rceXCe > div > div.NHaLPe.CoOyx > span > button", self.CLICK)
+            "#ow3 > div.T4LgNb > div > div:nth-child(9) > div.crqnQb > div.DAQYgc.xPh1xb.P9KVBf > div.rceXCe > div > div.NHaLPe.CoOyx > span > button", self.Action.CLICK())
 
         self.driver.quit()
-        self.MEET_States = "OFFLINE"
+
     def force_quit(self):
         self.driver.quit()
-        self.MEET_States = "OFFLINE"
 
 
 if __name__ == "__main__":
