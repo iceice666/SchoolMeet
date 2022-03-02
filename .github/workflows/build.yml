@@ -15,7 +15,8 @@ jobs:
     - run: pip install -r requirements.txt
     - run: pyinstaller -s build.spec
 
-    - run: copy src/chromedriver.exe dist/SchoolMeet
+    - run: dir
+    #- run: copy src/chromedriver.exe dist/SchoolMeet
 
     - uses: actions/upload-artifact@v2
       with:
