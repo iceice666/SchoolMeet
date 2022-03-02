@@ -1,5 +1,7 @@
 # SchoolMeet
 
+[![Package Application](https://github.com/iceice666/SchoolMeet/actions/workflows/main.yml/badge.svg)](https://github.com/iceice666/SchoolMeet/actions/workflows/main.yml)
+
 A small program to automatically login to Google Meet when Morning Exercise.
 
 Default school has been set to "nkhhs"
