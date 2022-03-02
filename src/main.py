@@ -1,9 +1,11 @@
 import os
 from selenium import webdriver
+import selenium
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
 
 from random import randint
 from time import sleep
@@ -49,13 +51,11 @@ class MEET_driver():
     for i in opt_arg:
         opt.add_argument(i)
 
-    if os.path.exists("src/chromedriver.exe"):
-        _service = Service("src/chromedriver.exe")
-    else:
-        _service = None
-
     def __init__(self) -> None:
-        self.driver = webdriver.Chrome(service=self._service, options=self.opt)
+
+        self.driver = webdriver.Chrome(service=Service("chromedriver.exe"), options=self.opt)
+
+        #self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
 
     def driver_wait(self, CSS_selector: str, expression: list = ["None"], waiting_timeout: int = WAITING_TIMEOUT, find_frequency: int = FIND_FREQUENCY):
 
@@ -127,7 +127,7 @@ class MEET_driver():
 
 
 if __name__ == "__main__":
-    try:
+
         m = MEET_driver()
         m.get_into_meet()
 
@@ -138,7 +138,5 @@ if __name__ == "__main__":
                 print("U IDIOT!")
 
         m.force_quit()
-    except Exception as e:
-        print(e)
 
-    input()
+        input()
