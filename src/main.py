@@ -23,7 +23,7 @@ class MEET_driver():
             "found_element" will express the element that Selenium returned via driver_wait()'s CSS selector.
 
             **IMPORTANT!** You should always return a List type object.
-            => That makes the process can operate code multiple times, not just once.
+            => That makes the process can operate code multiple times easier.
         '''
 
         def CLICK(self): return ["found_element.click()"]
@@ -53,7 +53,7 @@ class MEET_driver():
 
     def __init__(self) -> None:
 
-        self.driver = webdriver.Chrome(service=Service("chromedriver.exe"), options=self.opt)
+        self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
 
         #self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
 
