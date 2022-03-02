@@ -5,7 +5,7 @@ block_cipher = None
 
 a = Analysis(['GUI.py'],
              pathex=['src'],
-             binaries=[('./chromedriver.exe', '.')],
+             binaries=[('./src/chromedriver.exe', '.')],
              datas=[],
              hiddenimports=[],
              hookspath=[],
