@@ -41,4 +41,5 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           upx_exclude=[],
-          name='SchoolMeet')
+          name='SchoolMeet'
+         )
