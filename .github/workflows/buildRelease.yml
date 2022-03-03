@@ -1,5 +1,14 @@
 on:
+  workflow_dispatch:
+    inputs:
+      ReleaseVersion:
+        required: true
+      ReleaseMessage:
+        required: true
+        default: ${{ github.event.head_commit.message }}
 
+
+  push:
 
 jobs:
   build:
@@ -38,5 +47,5 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: SchoolMeet.zip
-        body: ${{ github.event.head_commit.message }}
-        release_name: Pre-release
+        body: ${{github.event.input.ReleaseMessage}}
+        release_name: ${{github.event.input.ReleaseVersion}}
