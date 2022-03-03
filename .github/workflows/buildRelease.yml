@@ -8,8 +8,6 @@ on:
         default: ${{ github.event.head_commit.message }}
 
 
-  push:
-
 jobs:
   build:
     runs-on: windows-latest
@@ -32,7 +30,7 @@ jobs:
     - run: copy src/chromedriver.exe dist/SchoolMeet
 
     #~ Zip packaged folder
-    - run: papeloto/action-zip@v1
+    - uses: papeloto/action-zip@v1
       with:
         files: dist/SchoolMeet
         dest: SchoolMeet.zip
@@ -49,3 +47,4 @@ jobs:
         file: SchoolMeet.zip
         body: ${{github.event.input.ReleaseMessage}}
         release_name: ${{github.event.input.ReleaseVersion}}
+        tag: ${{ github.ref }}

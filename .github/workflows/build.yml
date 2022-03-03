@@ -40,3 +40,4 @@ jobs:
         file: SchoolMeet.zip
         body: ${{ github.event.head_commit.message }}
         release_name: Pre-release
+        tag: ${{ github.ref }}
