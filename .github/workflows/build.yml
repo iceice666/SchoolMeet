@@ -18,33 +18,33 @@ jobs:
 
 
     steps:
-    - name: Initialization
+    #~ Initialization
     - uses: actions/checkout@v2
 
-    - name: Setup Python 3.10.1
+    #~ Setup Python 3.10.1
     - uses: actions/setup-python@v2
       with:
         python-version: 3.10.1
 
-    - name: Setup Requirment Env
+    #~ Setup Requirment Env
     - run: pip install -r requirements.txt
 
-    - name: Building
+    #~ Building
     - run: pyinstaller -s build.spec
     - run: copy src/chromedriver.exe dist/SchoolMeet
 
-    - name: Zip packaged folder
+    #~ Zip packaged folder
     - run: papeloto/action-zip@v1
       with:
         files: dist/SchoolMeet
         dest: SchoolMeet.zip
 
-    - name: Upload artifact
+    #~ Upload artifact
     - uses: actions/upload-artifact@v2
       with:
         path: SchoolMeet.zip
 
-    - name: Publish Release
+    #~ Publish Release
     - uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
