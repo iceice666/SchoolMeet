@@ -1,4 +1,4 @@
-import os
+
 from selenium import webdriver
 import selenium
 from selenium.webdriver.chrome.service import Service
@@ -53,7 +53,7 @@ class MEET_driver():
 
     def __init__(self) -> None:
 
-        self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
+        self.driver = webdriver.Chrome(service=Service("./chromedriver.exe"), options=self.opt)
 
         #self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
 
