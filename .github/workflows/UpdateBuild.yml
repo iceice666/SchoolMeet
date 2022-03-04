@@ -21,8 +21,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Building
-      run: pyinstaller -s build.spec
-      run: copy src/chromedriver.exe dist/SchoolMeet
+      run: pyinstaller -s build.spec && copy src/chromedriver.exe dist/SchoolMeet
 
     - name: Zip packaged folder
       uses: papeloto/action-zip@v1
