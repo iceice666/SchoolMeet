@@ -1,12 +1,6 @@
 on:
   workflow_dispatch:
-    inputs:
-      ReleaseVersion:
-        required: true
-        default: Pre-Release ${{steps.current-time.outputs.formattedTime}}
-      ReleaseMessage:
-        required: true
-        default: Custom Build
+
 
 
 jobs:
@@ -41,4 +35,4 @@ jobs:
       with:
         path: SchoolMeet.zip
 
-    
+
