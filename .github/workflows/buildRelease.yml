@@ -3,6 +3,7 @@ on:
     inputs:
       ReleaseVersion:
         required: true
+        default: Pre-Release ${{steps.current-time.outputs.formattedTime}}
       ReleaseMessage:
         required: true
         default: ${{ github.event.head_commit.message }}
@@ -14,37 +15,45 @@ jobs:
 
 
     steps:
-    #~ Initialization
-    - uses: actions/checkout@v2
+    - name: Initialization
+      uses: actions/checkout@v2
 
-    #~ Setup Python 3.10.1
-    - uses: actions/setup-python@v2
+    - name: Setup Python 3.10.1
+      uses: actions/setup-python@v2
       with:
         python-version: 3.10.1
 
-    #~ Setup Requirment Env
-    - run: pip install -r requirements.txt
+    - name: Setup Requirment Env
+      run: pip install -r requirements.txt
 
-    #~ Building
-    - run: pyinstaller -s build.spec
-    - run: copy src/chromedriver.exe dist/SchoolMeet
+    - name: Building
+      run: pyinstaller -s build.spec
+      run: copy src/chromedriver.exe dist/SchoolMeet
 
-    #~ Zip packaged folder
-    - uses: papeloto/action-zip@v1
+    - name: Zip packaged folder
+      uses: papeloto/action-zip@v1
       with:
         files: dist/SchoolMeet
         dest: SchoolMeet.zip
 
-    #~ Upload artifact
-    - uses: actions/upload-artifact@v2
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
         path: SchoolMeet.zip
 
-    #~ Publish Release
-    - uses: svenstaro/upload-release-action@v2
+    - name: Get current time
+      uses: josStorer/get-current-time@v2
+      id: current-time
+      with:
+        format: YYYYMMDD-HHmmss
+        utcOffset: "+08:00"
+
+    - name: Publish Pre-Release
+      uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: SchoolMeet.zip
         body: ${{github.event.input.ReleaseMessage}}
         release_name: ${{github.event.input.ReleaseVersion}}
         tag: ${{ github.ref }}
+        prerelease: true
