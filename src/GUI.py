@@ -86,4 +86,3 @@ class MEET_Gui():
     Btn_stop.pack(side="left")
 
     root.mainloop()
-

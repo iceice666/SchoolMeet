@@ -100,7 +100,7 @@ class MEET_driver():
         self.driver_wait("#yDmH0d > c-wiz > div > div > div:nth-child(9) > div.crqnQb > div > div > div.vgJExf > div > div > div.d7iDfe.NONs6c > div > div.Sla0Yd > div > div.XCoPyb > div.uArJ5e.UQuaGc.Y5sE8d.uyXBBb.xKiqt.M9Bg4d > span", self.Action.CLICK())
 
         print("\nDONE")
-        self.STATE=""
+        self.STATE = "successful"
 
     #! It might doesn't work. SAD
 
