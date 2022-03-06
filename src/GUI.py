@@ -1,15 +1,36 @@
 
 
 from main import MEET_driver
+import multiprocessing as mp
 
 import tkinter as tk
 
 
 class MEET_Gui():
     class _Func():
+        class _func():
+            def start(self):
+                self.m=MEET_driver()
+                self.m.get_into_meet()
+            def stop(self):
+                self.m.quit_meet()
+                self.m.close_driver()
+
+        f = _func()
         def start(self):
-            self.m=MEET_driver()
-            self.m.get_into_meet()
+            self.Process_MeetDriver=mp.Process(target=self.f.start)
+            self.Process_MeetDriver.daemon=True
+            self.Process_MeetDriver.start()
+
+        def stop(self):
+            Process_MeetDriverKiller=mp.Process(target=self.f.stop)
+            Process_MeetDriverKiller.daemon=True
+            Process_MeetDriverKiller.start()
+            Process_MeetDriverKiller.join(60)
+
+            if self.Process_MeetDriver.is_alive():
+                self.Process_MeetDriver.kill()
+                Process_MeetDriverKiller.kill()
 
 
 
@@ -56,10 +77,12 @@ class MEET_Gui():
     funcBtn = tk.Frame(root)
     funcBtn.pack()
 
-
     Btn_start = tk.Button(funcBtn, text="Start",
                           font=("Microsoft JhengHei", 20),command= BtnFunc.start)
     Btn_start.pack()
+
+    Btn_stop = tk.Button(funcBtn, text="Stop", font=(
+        "Microsoft JhengHei", 20), command=BtnFunc.stop)
 
     root.mainloop()
 

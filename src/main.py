@@ -11,8 +11,6 @@ from random import randint
 from time import sleep
 
 global EMAIL, PASSWORD
-EMAIL = "903@kmhjh.kh.edu.tw"
-PASSWORD = "12345678"
 
 
 class MEET_driver():
@@ -53,7 +51,8 @@ class MEET_driver():
 
     def __init__(self) -> None:
 
-        self.driver = webdriver.Chrome(service=Service("./chromedriver.exe"), options=self.opt)
+        self.driver = webdriver.Chrome(service=Service(
+            "./chromedriver.exe"), options=self.opt)
 
         #self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
 
@@ -66,7 +65,7 @@ class MEET_driver():
 
         return found_element
 
-    def get_into_meet(self, email: str = EMAIL, password: str = PASSWORD):
+    def get_into_meet(self, email: str, password: str):
 
         # ^ MEET
         self.driver.get("https://meet.google.com/")
@@ -120,23 +119,22 @@ class MEET_driver():
         self.driver_wait(
             "#ow3 > div.T4LgNb > div > div:nth-child(9) > div.crqnQb > div.DAQYgc.xPh1xb.P9KVBf > div.rceXCe > div > div.NHaLPe.CoOyx > span > button", self.Action.CLICK())
 
-        self.driver.quit()
 
-    def force_quit(self):
+    def close_driver(self):
         self.driver.quit()
 
 
 if __name__ == "__main__":
 
-        m = MEET_driver()
-        m.get_into_meet()
+    m = MEET_driver()
+    m.get_into_meet()
 
-        while 1:
-            if input() == "QUIT":
-                break
-            else:
-                print("U IDIOT!")
+    while 1:
+        if input() == "QUIT":
+            break
+        else:
+            print("U IDIOT!")
 
-        m.force_quit()
+    m.close_driver()
 
-        input()
+    input()
