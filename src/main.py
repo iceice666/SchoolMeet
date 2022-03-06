@@ -54,9 +54,13 @@ class MEET_driver():
         self.driver = webdriver.Chrome(service=Service(
             "./chromedriver.exe"), options=self.opt)
 
+        self.STATE="inactive"
+
         #self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
+    def fetch_state(self): return self.STATE
 
     def driver_wait(self, CSS_selector: str, expression: list = ["None"], waiting_timeout: int = WAITING_TIMEOUT, find_frequency: int = FIND_FREQUENCY):
+
 
         found_element = WebDriverWait(self.driver, waiting_timeout, find_frequency).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, CSS_selector)))
@@ -66,6 +70,8 @@ class MEET_driver():
         return found_element
 
     def get_into_meet(self, email: str, password: str):
+
+        self.STATE="connecting"
 
         # ^ MEET
         self.driver.get("https://meet.google.com/")
@@ -94,6 +100,7 @@ class MEET_driver():
         self.driver_wait("#yDmH0d > c-wiz > div > div > div:nth-child(9) > div.crqnQb > div > div > div.vgJExf > div > div > div.d7iDfe.NONs6c > div > div.Sla0Yd > div > div.XCoPyb > div.uArJ5e.UQuaGc.Y5sE8d.uyXBBb.xKiqt.M9Bg4d > span", self.Action.CLICK())
 
         print("\nDONE")
+        self.STATE=""
 
     #! It might doesn't work. SAD
 

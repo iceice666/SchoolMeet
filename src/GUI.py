@@ -79,10 +79,11 @@ class MEET_Gui():
 
     Btn_start = tk.Button(funcBtn, text="Start",
                           font=("Microsoft JhengHei", 20),command= BtnFunc.start)
-    Btn_start.pack()
+    Btn_start.pack(side="left")
 
     Btn_stop = tk.Button(funcBtn, text="Stop", font=(
         "Microsoft JhengHei", 20), command=BtnFunc.stop)
+    Btn_stop.pack(side="left")
 
     root.mainloop()
 
