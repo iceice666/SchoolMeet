@@ -49,14 +49,13 @@ class MEET_driver():
     for i in opt_arg:
         opt.add_argument(i)
 
-    def __init__(self) -> None:
+    def init(self):
 
         self.driver = webdriver.Chrome(service=Service(
-            "./chromedriver.exe"), options=self.opt)
+            "src/chromedriver.exe"), options=self.opt)
 
         self.STATE="inactive"
 
-        #self.driver = webdriver.Chrome(service=Service("src/chromedriver.exe"), options=self.opt)
     def fetch_state(self): return self.STATE
 
     def driver_wait(self, CSS_selector: str, expression: list = ["None"], waiting_timeout: int = WAITING_TIMEOUT, find_frequency: int = FIND_FREQUENCY):

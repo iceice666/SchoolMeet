@@ -9,16 +9,18 @@ import tkinter as tk
 class MEET_Gui():
     class _Func():
         class _func():
-            def start(self):
-                self.m=MEET_driver()
-                self.m.get_into_meet()
+            m = MEET_driver()
+            def start(self,email,password):
+                self.m.init()
+                self.m.get_into_meet(email,password)
             def stop(self):
                 self.m.quit_meet()
                 self.m.close_driver()
 
         f = _func()
         def start(self):
-            self.Process_MeetDriver=mp.Process(target=self.f.start)
+            self.Process_MeetDriver = mp.Process(target=self.f.start, args=(
+                MEET_Gui.Var_Email.get(), MEET_Gui.Var_Pwd.get()))
             self.Process_MeetDriver.daemon=True
             self.Process_MeetDriver.start()
 
@@ -26,7 +28,7 @@ class MEET_Gui():
             Process_MeetDriverKiller=mp.Process(target=self.f.stop)
             Process_MeetDriverKiller.daemon=True
             Process_MeetDriverKiller.start()
-            Process_MeetDriverKiller.join(60)
+            Process_MeetDriverKiller.join(600)
 
             if self.Process_MeetDriver.is_alive():
                 self.Process_MeetDriver.kill()
@@ -53,8 +55,8 @@ class MEET_Gui():
     profile = tk.Frame(root)
     profile.pack()
 
-    Var_Email = tk.StringVar()
-    Var_Pwd = tk.StringVar()
+    Var_Email = tk.StringVar(value="@kmhjh.kh.edu.tw")
+    Var_Pwd = tk.StringVar(value="12345678")
 
     Label_userEmail = tk.Label(profile, text="Email",
                                font=("Microsoft JhengHei", 20))
@@ -85,4 +87,10 @@ class MEET_Gui():
         "Microsoft JhengHei", 20), command=BtnFunc.stop)
     Btn_stop.pack(side="left")
 
-    root.mainloop()
+    def __init__(self) -> None:
+        self.root.mainloop()
+
+
+
+if __name__=="__main__":
+    r=MEET_Gui()
