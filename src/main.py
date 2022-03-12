@@ -38,6 +38,10 @@ class MEET_driver():
     WAITING_TIMEOUT = 120
     FIND_FREQUENCY = 1
 
+    INACTIVE = "inactive"
+    CONNECTING = "connecting"
+    SUCCESSFUL = "successful"
+
     opt = webdriver.ChromeOptions()
     opt.add_experimental_option(
         "excludeSwitches", ["enable-automation", "enable-logging"])
@@ -49,17 +53,11 @@ class MEET_driver():
     for i in opt_arg:
         opt.add_argument(i)
 
-    def init(self):
-
-        self.driver = webdriver.Chrome(service=Service(
-            "src/chromedriver.exe"), options=self.opt)
-
-        self.STATE="inactive"
+    STATE = INACTIVE
 
     def fetch_state(self): return self.STATE
 
     def driver_wait(self, CSS_selector: str, expression: list = ["None"], waiting_timeout: int = WAITING_TIMEOUT, find_frequency: int = FIND_FREQUENCY):
-
 
         found_element = WebDriverWait(self.driver, waiting_timeout, find_frequency).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, CSS_selector)))
@@ -69,8 +67,10 @@ class MEET_driver():
         return found_element
 
     def get_into_meet(self, email: str, password: str):
+        self.driver = webdriver.Chrome(service=Service(
+            "src/chromedriver.exe"), options=self.opt)
 
-        self.STATE="connecting"
+        self.STATE = self.CONNECTING
 
         # ^ MEET
         self.driver.get("https://meet.google.com/")
@@ -99,7 +99,7 @@ class MEET_driver():
         self.driver_wait("#yDmH0d > c-wiz > div > div > div:nth-child(9) > div.crqnQb > div > div > div.vgJExf > div > div > div.d7iDfe.NONs6c > div > div.Sla0Yd > div > div.XCoPyb > div.uArJ5e.UQuaGc.Y5sE8d.uyXBBb.xKiqt.M9Bg4d > span", self.Action.CLICK())
 
         print("\nDONE")
-        self.STATE = "successful"
+        self.STATE = self.SUCCESSFUL
 
     #! It might doesn't work. SAD
 
@@ -125,7 +125,6 @@ class MEET_driver():
         self.driver_wait(
             "#ow3 > div.T4LgNb > div > div:nth-child(9) > div.crqnQb > div.DAQYgc.xPh1xb.P9KVBf > div.rceXCe > div > div.NHaLPe.CoOyx > span > button", self.Action.CLICK())
 
-
     def close_driver(self):
         self.driver.quit()
 
@@ -133,7 +132,7 @@ class MEET_driver():
 if __name__ == "__main__":
 
     m = MEET_driver()
-    m.get_into_meet()
+    m.get_into_meet("903@kmhjh.kh.edu.tw","12345678")
 
     while 1:
         if input() == "QUIT":
