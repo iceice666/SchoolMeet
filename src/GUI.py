@@ -6,7 +6,7 @@ import multiprocessing as mp
 import tkinter as tk
 
 from selenium.common.exceptions import WebDriverException
-
+import sys
 
 class MEET_Gui():
     class _Func():
@@ -23,18 +23,21 @@ class MEET_Gui():
                 self.m.close_driver()
 
             def exit(self):
-                if self.m.fetch_state() == self.m.INACTIVE:
-                    return
                 try:
                     self.m.close_driver()
                 except WebDriverException:
                     pass
 
+                sys.exit(0)
+
         f = _func()
 
         def start(self):
-            if self.Process_MeetDriver.is_alive:
-                return
+            try:
+                if self.Process_MeetDriver.is_alive:
+                    return
+            except AttributeError:
+                pass
 
             self.Process_MeetDriver = mp.Process(target=self.f.start, args=(
                 MEET_Gui.Var_Email.get(), MEET_Gui.Var_Pwd.get()))
@@ -42,8 +45,11 @@ class MEET_Gui():
             self.Process_MeetDriver.start()
 
         def stop(self):
-            if self.Process_MeetDriverKiller.is_alive:
-                return
+            try:
+                if self.Process_MeetDriverKiller.is_alive:
+                    return
+            except AttributeError:
+                pass
 
             self.Process_MeetDriverKiller = mp.Process(target=self.f.stop)
             self.Process_MeetDriverKiller.daemon = True

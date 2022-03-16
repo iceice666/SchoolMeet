@@ -49,7 +49,7 @@ class MEET_driver():
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
 
     opt_arg = [" --start-maximized", "--disable-user-media-security",
-               f"user-agent={user_agent}", "blink-settings=imagesEnabled=false"]
+               f"user-agent={user_agent}", "blink-settings=imagesEnabled=true"]
     for i in opt_arg:
         opt.add_argument(i)
 
@@ -127,6 +127,12 @@ class MEET_driver():
 
     def close_driver(self):
         self.driver.quit()
+
+        '''
+        #view_container > div > div > div.pwWryf.bxPAYd > div > div.WEQkZc > div > form > span > section > div > div > div.Wzzww > div
+        #
+        #this maybe a human check
+        # '''
 
 
 if __name__ == "__main__":
