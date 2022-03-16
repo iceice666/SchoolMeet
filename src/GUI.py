@@ -8,6 +8,7 @@ import tkinter as tk
 from selenium.common.exceptions import WebDriverException
 import sys
 
+
 class MEET_Gui():
     class _Func():
         class _func():
@@ -25,10 +26,8 @@ class MEET_Gui():
             def exit(self):
                 try:
                     self.m.close_driver()
-                except WebDriverException:
+                except WebDriverException or AttributeError:
                     pass
-
-                sys.exit(0)
 
         f = _func()
 
@@ -60,6 +59,7 @@ class MEET_Gui():
             pe = mp.Process(target=self.f.exit)
             pe.start()
             pe.join()
+            sys.exit(0)
 
     BtnFunc = _Func()
 
@@ -69,7 +69,6 @@ class MEET_Gui():
     # ^ States
     states = tk.Frame(root)
     states.pack()
-
 
     Label_MEET_States = tk.Label(
         states, font=("Microsoft JhengHei", 20))

@@ -90,6 +90,9 @@ class MEET_driver():
         self.driver_wait("#passwordNext > div > button > span",
                          self.Action.CLICK())
 
+        "#view_container > div > div > div.pwWryf.bxPAYd > div > div.WEQkZc > div > form > span > section > div > div > div.Wzzww > div"
+
+
         # ^ MEET CODE
         self.driver_wait("#i3", self.Action.INPUT("nkhhs"))
         self.driver_wait("#yDmH0d > c-wiz > div > div.S3RDod > div > div.Qcuypc > div.Ez8Iud > div > div.KOM0mb >    div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > button > span",
@@ -128,11 +131,6 @@ class MEET_driver():
     def close_driver(self):
         self.driver.quit()
 
-        '''
-        #view_container > div > div > div.pwWryf.bxPAYd > div > div.WEQkZc > div > form > span > section > div > div > div.Wzzww > div
-        #
-        #this maybe a human check
-        # '''
 
 
 if __name__ == "__main__":
